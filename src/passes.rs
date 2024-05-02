@@ -56,6 +56,8 @@ use llvm_sys::transforms::ipo::LLVMAddIPConstantPropagationPass;
 #[llvm_versions(4.0..=11.0)]
 use llvm_sys::transforms::scalar::LLVMAddConstantPropagationPass;
 
+#[llvm_versions(17.0..=latest)]
+use llvm_sys::transforms::pass_builder::LLVMPassBuilderOptionsSetInlinerThreshold;
 #[llvm_versions(13.0..=latest)]
 use llvm_sys::transforms::pass_builder::{
     LLVMCreatePassBuilderOptions, LLVMDisposePassBuilderOptions, LLVMPassBuilderOptionsRef,
@@ -1294,6 +1296,13 @@ impl PassBuilderOptions {
     pub fn set_merge_functions(&self, value: bool) {
         unsafe {
             LLVMPassBuilderOptionsSetMergeFunctions(self.options_ref, value as i32);
+        }
+    }
+
+    #[llvm_versions(17.0..=latest)]
+    pub fn set_inliner_with_threshold(&self, value: u32) {
+        unsafe {
+            LLVMPassBuilderOptionsSetInlinerThreshold(self.options_ref, value as i32);
         }
     }
 }

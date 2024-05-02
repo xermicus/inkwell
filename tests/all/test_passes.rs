@@ -258,6 +258,8 @@ fn test_run_passes() {
     pass_options.set_licm_mssa_no_acc_for_promotion_cap(10);
     pass_options.set_call_graph_profile(true);
     pass_options.set_merge_functions(true);
+    #[cfg(any("llvm17-0", feature = "llvm18-0"))]
+    pass_options.set_inliner_with_threshold(42);
 
     let initialization_config = &InitializationConfig::default();
     Target::initialize_all(initialization_config);
